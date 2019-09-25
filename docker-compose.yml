@@ -1,0 +1,26 @@
+version: '3'
+services:
+  web:
+    image: bitnami/apache:latest
+    container_name: apache_web
+    restart: always
+    ports:
+      - '8080:8080'
+      - '8443:8443'
+    volumes:
+      - ./ui/dist:/app
+  mongo:
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+
+  eth:
+    image: ethereum/client-go
+    container_name: eth_web
+    restart: always
+    ports:
+      - '8545:8545'
+      - '30303:30303'
+    command: "--rpc --rpcaddr '0.0.0.0' --rpcport '9000' "

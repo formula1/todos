@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "outDir": "./temp/",
+    "lib": ["es5", "es2015"],
+    "noImplicitAny": true,
+    "module": "commonjs",
+    "removeComments": true,
+    "preserveConstEnums": true,
+    "sourceMap": true,
+    "target": "es6",
+    "jsx": "react"
+  },
+  "typeRoots": [
+    "./node_modules/@types",
+    "./@types"
+  ],
+  "files": [
+    "src/index.tsx"
+  ],
+  "exclude": [
+    "node_modules",
+    "**/*.spec.ts"
+  ]
+}

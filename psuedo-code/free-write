@@ -1,0 +1,41 @@
+Basic
+- Interactive Interface
+- User
+  - Purpose
+    - Allow an individual to identify themselves inorder to use restricted
+  - Strategies
+    - To initialize
+  - function to ensure user
+    - Based on cookie
+    - Based on basic authentication
+- TodoList
+  - Requires User
+- Money Exchange
+  - Requires User
+
+
+
+Create User/Sign in
+- one todo per user
+
+todo item
+- Create
+  - Expects
+    - date Description
+    - provides user
+    - provides date created
+- Request
+  - request list
+    - filter by not finished
+    - filter by finished
+- Update
+  - Update Description
+  - Update date finished
+    - After finished once, can not reupdate
+- Delete
+
+todo item - database
+- ObjectId - Index - owner
+- integer - Index - date created
+- integer - date finished
+- string - Description
