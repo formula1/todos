@@ -1,0 +1,31 @@
+{
+  "name": "javascript-live",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start:dev": "ts-node-dev --ignore-watch=node_modules --respawn --transpileOnly ./src/index.ts",
+    "start:prod": "tsc && node ./dist/index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/es6-promise": "^3.3.0",
+    "@types/mongodb": "^3.3.5",
+    "@types/node": "^12.7.11",
+    "@types/readable-stream": "^2.3.5",
+    "@types/websocket": "0.0.40",
+    "@types/ws": "^6.0.3",
+    "ts-node-dev": "^1.0.0-pre.43",
+    "typescript": "^3.6.3"
+  },
+  "dependencies": {
+    "common-messenger-interface": "github:formula1/JS-Messaging",
+    "es6-promise": "^4.2.8",
+    "mongodb": "^3.3.2",
+    "readable-stream": "^3.4.0",
+    "websocket": "^1.0.30",
+    "ws": "^7.1.2"
+  }
+}

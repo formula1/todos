@@ -1,6 +1,6 @@
 import * as React from "react";
 import TodoItem from "./todo-item";
-import { Todo } from "../types/interface";
+import { Todo } from "../types/todo";
 import { connect } from 'react-redux'
 import { TodoState, TODO_REDUCER_NAME, TodoAction } from "../api/redux/constants";
 

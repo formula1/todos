@@ -8,14 +8,24 @@ import { TodoPage } from "./todo/ui-promise/todo";
 import { TODO_REDUCER_NAME } from "./todo/api/redux-promise/constants";
 import todoReducer from "./todo/api/redux-promise/reducer";
 import { api_setAPI, r_listTodos } from "./todo/api/redux-promise/actions";
-import { LocalTodoAPI } from "./todo/api/indexeddb/api";
-import { getDbArgs } from "./todo/api/indexeddb/constants";
+
+import {
+  SERVER_HOST,
+  PUBLIC_UI_PORT,
+  PUBLIC_SERVER_PORT
+} from "./constants/development";
+
+import { TodoAPI } from "./todo/api/fetch/api";
+import { getDbArgs, liveDBArgs } from "./constants/development";
 
 const store = makeStore(combineReducers({
   [TODO_REDUCER_NAME]: todoReducer
 }));
 
-const api = new LocalTodoAPI(getDbArgs);
+const api = new TodoAPI({
+  ...getDbArgs,
+  ...liveDBArgs
+});
 
 function updateTodos(){
   api.r_All().then((items)=>{
@@ -30,10 +40,9 @@ api.on("update", ()=>{
   console.log("retrieving_all")
   updateTodos()
 })
-updateTodos()
-
 
 store.dispatch(api_setAPI(api))
+updateTodos()
 
 ReactDOM.render(
   <Provider store={store}>

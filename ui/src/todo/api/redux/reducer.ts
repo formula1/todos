@@ -2,12 +2,11 @@ import { TODO_REDUCER_NAME, TODO_ACTIONS, TodoState, TodoAction } from "./consta
 
 import {
   Todo, TodoInit
-} from "../../types/interface";
+} from "../../types/todo";
 
 import {
   uniqueID
 } from "../../../util/db-tools";
-
 
 const DEFAULT_STATE: TodoState = {}
 

@@ -5,11 +5,11 @@ import {
   ITodoAPI,
   Todo,
   TodoInit
-} from "../../types/interface";
+} from "../../types/todo";
 
 import {
   getDatabase,
-  getDatabaseArgs,
+  IndexedDBArgs,
 } from "../../../util/indexeddb";
 
 import {
@@ -24,9 +24,9 @@ import {
   TODO_OBJECT_STORE_NAME,
 } from "./constants";
 
-export class LocalTodoAPI extends EventEmitter implements ITodoAPI {
-  private args: getDatabaseArgs
-  constructor(args: getDatabaseArgs){
+export class TodoAPI extends EventEmitter implements ITodoAPI {
+  private args: IndexedDBArgs
+  constructor(args: IndexedDBArgs){
     super()
     this.on("update", ()=>{
       console.log("updating");

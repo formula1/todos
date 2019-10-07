@@ -1,6 +1,6 @@
 import * as React from "react";
-import * as moment from "moment";
-import { Todo } from "../types/interface";
+import moment from "moment";
+import { Todo } from "../types/todo";
 import { connect } from 'react-redux'
 import {
   u_todoFinish,

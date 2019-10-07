@@ -5,10 +5,12 @@ import {
   ITodoAPI,
   Todo,
   TodoInit
-} from "../../types/interface";
+} from "../../types/todo";
 
 import {
   fetch,
+  jsonToFormData,
+  handleResponse
 } from "../../../util/fetch";
 
 import {
@@ -16,149 +18,66 @@ import {
 } from "../../../util/promise"
 
 import {
-  uniqueID,
-} from "../../../util/db-tools"
-
-import {
-  DB_URL,
-  TODO_PATH,
   FetchDBArgs,
-  fetchDBArgs
+  LiveDBArgs
 } from "./constants";
 
-export class LocalTodoAPI extends EventEmitter implements ITodoAPI {
+export class TodoAPI extends EventEmitter implements ITodoAPI  {
   private args: FetchDBArgs
-  private user: string;
-  constructor(args: FetchDBArgs){
+  private liveConnection: WebSocket;
+
+  constructor(args: FetchDBArgs & LiveDBArgs){
     super()
+    this.liveConnection = new WebSocket(args.liveUrl)
+    this.liveConnection.onmessage = ()=>{
+      this.emit("update");
+    }
     this.on("update", ()=>{
       console.log("updating");
     })
+    console.log(args)
     this.args = args;
   }
 
-  private getUser(){
-    return fetch(`${this.args.url}/${this.args.user_path}`)
-    .then((response)=>{
-      return response.json().then((json)=>{
-        if(!response.ok){
-          throw json
-        }
-        this.user = json
-      });
-    });
+  public r_All(): Promise<any /*Array<Todo> */> {
+    return fetch(
+      `${this.args.url}/todo/request`
+    ).then(handleResponse)
   }
 
   public r_List(): Promise<any /*Array<Todo> */> {
-    return this.getDB().then((db)=>{
-      return new Promise((res, rej)=>{
-        var transaction = db.transaction([TODO_OBJECT_STORE_NAME], "readwrite");
-        var objectStore = transaction.objectStore(TODO_OBJECT_STORE_NAME);
-        var request = objectStore.getAllKeys();
-        request.onerror = rej;
-        request.onsuccess = (ev)=>{
-          console.log(ev)
-          res((ev.target as any).result);
-        };
-      });
-    });
-  }
-  public r_Single(id: string): Promise<any> {
-    return this.getDB().then((db)=>{
-      return new Promise((res, rej)=>{
-        var transaction = db.transaction([TODO_OBJECT_STORE_NAME], "readwrite");
-        var objectStore = transaction.objectStore(TODO_OBJECT_STORE_NAME);
-        var request = objectStore.get(id);
-        request.onerror = rej;
-        request.onsuccess = (ev)=>{
-          console.log(ev)
-          res((ev.target as any).result);
-        };
-      });
-    });
-  }
-  public r_All(): Promise<any /*Array<Todo> */> {
-    return this.getDB().then((db)=>{
-      return new Promise((res, rej)=>{
-        var transaction = db.transaction([TODO_OBJECT_STORE_NAME], "readwrite");
-        var objectStore = transaction.objectStore(TODO_OBJECT_STORE_NAME);
-        var request = objectStore.getAll();
-        request.onerror = rej;
-        request.onsuccess = (ev)=>{
-          console.log(ev)
-          res((ev.target as any).result);
-        };
-      });
-    });
+    return fetch(
+      `${this.args.url}/todo/request/keys`
+    ).then(handleResponse)
   }
 
+
+  public r_Single(id: string): Promise<any> {
+    return fetch(
+      `${this.args.url}/todo/request/${id}`
+    ).then(handleResponse)
+  }
 
   public c_createItem(item: TodoInit): Promise<Todo>{
-    return this.getDB().then((db)=>{
-      return new Promise((res, rej)=>{
-        (item as Todo)._id = uniqueID();
-        var transaction = db.transaction([TODO_OBJECT_STORE_NAME], "readwrite");
-        var objectStore = transaction.objectStore(TODO_OBJECT_STORE_NAME);
-        var request = objectStore.add(item);
-        request.onerror = rej;
-        request.onsuccess = ()=>{
-          res(item as Todo);
-        };
-      });
-    }).then((v: Todo)=>{
-      this.emit('update');
-      return v
-    });
+    console.log("creating", item, `${this.args.url}/todo/create`);
+
+    return fetch(
+      `${this.args.url}/todo/create`,
+      {
+        method: "post",
+        body: jsonToFormData(item)
+      }
+    ).then(handleResponse)
   }
+
   public u_finishItem(id: string): Promise<Todo> {
-    return this.getDB().then((db)=>{
-      return new Promise((res, rej)=>{
-        var transaction = db.transaction([TODO_OBJECT_STORE_NAME], "readwrite");
-        var objectStore = transaction.objectStore(TODO_OBJECT_STORE_NAME);
-        var request = objectStore.get(id);
-        request.onerror = rej;
-        request.onsuccess = (event)=>{
-          res([objectStore, event]);
-        };
-      });
-    }).then(([objectStore, event])=>{
-      return new Promise((res, rej)=>{
-        var data = event.target.result;
-        data.finished = Date.now();
-        var requestUpdate = objectStore.put(data);
-         requestUpdate.onerror = rej;
-         requestUpdate.onsuccess = ()=>{
-           res(data)
-         };
-      });
-    }).then((v: Todo)=>{
-      this.emit('update');
-      return v
-    });
+    return fetch(
+      `${this.args.url}/todo/finish/${id}`
+    ).then(handleResponse)
   }
   public d_deleteItem(id: string): Promise<Todo>{
-    return this.getDB().then((db)=>{
-      return new Promise((res, rej)=>{
-        var objectStore = db.transaction([TODO_OBJECT_STORE_NAME], "readwrite")
-        .objectStore(TODO_OBJECT_STORE_NAME);
-        var request = objectStore.get(id);
-        request.onerror = rej;
-        request.onsuccess = (event)=>{
-          res([objectStore, event]);
-        };
-      });
-    }).then(([objectStore, event])=>{
-      return new Promise((res, rej)=>{
-        var data = event.target.result;
-        var requestUpdate = objectStore.delete(id);
-         requestUpdate.onerror = rej;
-         requestUpdate.onsuccess = ()=>{
-           res(data)
-         };
-      });
-    }).then((v: Todo)=>{
-      this.emit('update');
-      return v
-    });
+    return fetch(
+      `${this.args.url}/todo/delete/${id}`
+    ).then(handleResponse)
   }
 };

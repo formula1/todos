@@ -13,10 +13,10 @@ const dbUpgrades: UpgradeFns = {
   }
 };
 import {
-  getDatabaseArgs,
+  IndexedDBArgs,
 } from "../../../util/indexeddb";
 
-const getDbArgs: getDatabaseArgs = {
+const getDbArgs: IndexedDBArgs = {
   name: DB_NAME,
   version: DB_VERSION,
   upgradeFns: dbUpgrades

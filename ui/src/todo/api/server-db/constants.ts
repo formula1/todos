@@ -1,7 +1,7 @@
 
 import {
   Todo, TodoInit
-} from "../../types/interface";
+} from "../../types/todo";
 
 const TODO_REDUCER_NAME = "TODO";
 

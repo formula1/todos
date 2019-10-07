@@ -42,7 +42,7 @@ export {
   IdJSONArray
 }
 
-type getDatabaseArgs = {
+type IndexedDBArgs = {
   name: string,
   version: number,
   upgradeFns: UpgradeFns
@@ -51,7 +51,7 @@ type getDatabaseArgs = {
 type UpgradeFns = { [key: number ]: (db: IDBDatabase)=>any};
 
 export {
-  getDatabaseArgs,
+  IndexedDBArgs,
   UpgradeFns
 }
 
@@ -82,7 +82,7 @@ export function getDatabase({
   name,
   version,
   upgradeFns
-}: getDatabaseArgs): Promise<IDBDatabase>{
+}: IndexedDBArgs): Promise<IDBDatabase>{
   return new Promise((res, rej)=>{
     var request = indexedDB.open(name, version);
     request.onerror = rej;

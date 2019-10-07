@@ -1,23 +1,26 @@
 
-const DB_URL = "localhost:8081";
-const TODO_PATH = "todo"
-const USER_PATH = "user"
+const PUBLIC_UI_PORT = process.env.PUBLIC_UI_PORT;
+const PUBLIC_SERVER_PROTOCOL = process.env.PUBLIC_SERVER_PROTOCOL;
+const PUBLIC_SERVER_HOSTNAME = process.env.PUBLIC_SERVER_HOSTNAME;
+const PUBLIC_SERVER_PORT = process.env.PUBLIC_SERVER_PORT;
+const EXTERNAL_SHARED_HOSTNAME = process.env.EXTERNAL_SHARED_HOSTNAME
+
+console.log(process.env);
 
 type FetchDBArgs = {
   url: string,
-  todo_path: string,
-  user_path: string
 }
 
-const fetchDBArgs = {
-  url: DB_URL,
-  todo_path: TODO_PATH,
-  user_path: USER_PATH
+type LiveDBArgs = {
+  liveUrl: string
 }
+
 
 export {
-  DB_URL,
-  TODO_PATH,
+  PUBLIC_UI_PORT,
+  PUBLIC_SERVER_PROTOCOL,
+  PUBLIC_SERVER_HOSTNAME,
+  PUBLIC_SERVER_PORT,
   FetchDBArgs,
-  fetchDBArgs
+  LiveDBArgs,
 };

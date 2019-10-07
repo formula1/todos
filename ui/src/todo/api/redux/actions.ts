@@ -1,6 +1,6 @@
 import {
   TodoInit
-} from "../../types/interface";
+} from "../../types/todo";
 import { TODO_ACTIONS, } from "./constants";
 
 export function c_todoCreate(todo: TodoInit){

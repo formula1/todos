@@ -1,6 +1,6 @@
 import * as React from "react";
 import { connect } from 'react-redux'
-import { TodoInit } from "../types/interface";
+import { TodoInit } from "../types/todo";
 import { JSONcopy } from "../../util/JSON";
 import { c_todoCreate } from "../api/redux/actions"
 

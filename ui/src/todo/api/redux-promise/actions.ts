@@ -1,6 +1,6 @@
 import {
   TodoInit, Todo, ITodoAPI
-} from "../../types/interface";
+} from "../../types/todo";
 import { TODO_ACTIONS, } from "./constants";
 import { TODO_REDUCER_NAME, TodoState } from "./constants";
 
