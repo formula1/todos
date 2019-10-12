@@ -1,7 +1,6 @@
 import thunkMiddleware from 'redux-thunk'
 import { createLogger } from 'redux-logger'
-import { createStore, applyMiddleware } from 'redux'
-
+import { Store, createStore, applyMiddleware } from 'redux'
 
 function makeStore(reducer: (state: any, action: any)=> any){
   const loggerMiddleware = createLogger()
@@ -17,5 +16,6 @@ function makeStore(reducer: (state: any, action: any)=> any){
 }
 
 export {
-  makeStore
+  makeStore,
+  Store
 };

@@ -1,4 +1,4 @@
-pragma solidity  0.5.11;
+pragma solidity  0.5.12;
 
 
 library ArrayOps {
@@ -34,7 +34,7 @@ library ArrayOps {
         uint i = binarySearch(sortedArray, indexVal);
         require(i < sortedArray.length, "Index Value not found");
 
-        for (true; i < sortedArray.length-1; i++) {
+        for (0; i < sortedArray.length-1; i++) {
             sortedArray[i] = sortedArray[i+1];
         }
         delete sortedArray[sortedArray.length-1];

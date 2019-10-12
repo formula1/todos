@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start:dev": "ts-node-dev --ignore-watch=node_modules --respawn --transpileOnly ./src/index.ts",
+    "start:dev": "ts-node ./src/index.ts",
     "start:prod": "tsc && node ./dist/index.js"
   },
   "author": "",
@@ -17,6 +17,7 @@
     "@types/readable-stream": "^2.3.5",
     "@types/websocket": "0.0.40",
     "@types/ws": "^6.0.3",
+    "ts-node": "^8.4.1",
     "ts-node-dev": "^1.0.0-pre.43",
     "typescript": "^3.6.3"
   },
