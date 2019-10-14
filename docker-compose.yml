@@ -5,7 +5,7 @@ services:
     user: "node"
     working_dir: /home/node/app
     volumes:
-      - ./ui:/home/node/app
+      - ./web:/home/node/app
       - ./shared:/home/node/shared
     command: "npm run start:dev"
     env_file:
