@@ -11,6 +11,8 @@
     "build": "run-s build:*",
     "build:ts": "browserify --full-paths ./src/index.tsx --debug -t [envlocalify --envfile=../shared/public.env ] -t require-solidity -t browserify-css -p [ tsify -p ./tsconfig.json ] > ./dist/hidden.build.js && echo \"finished build\"",
     "build:ugly": "terser ./dist/hidden.build.js -o ./dist/hidden.ugly.js --compress --mangle --sourcemap \"filename='./dist/hidden.ugly.min.js.map',url='hidden.ugly.min.js.map'\"",
+    "build:disc": "discify ./dist/hidden.build.js > ./dist/hidden.stats.html",
+    "build:disc-ugly": "discify ./dist/hidden.ugly.js > ./dist/hidden.ugly-stats.html",
     "sol:clean": "rimraf ./dist/ethereum",
     "sol": "run-s sol:*",
     "sol:build": "run-s sol:build:*",
@@ -48,6 +50,7 @@
   },
   "dependencies": {
     "bignumber.js": "^9.0.0",
+    "disc": "^1.3.3",
     "es6-promise": "^4.2.8",
     "fetch": "^1.1.0",
     "isomorphic-fetch": "^2.2.1",
