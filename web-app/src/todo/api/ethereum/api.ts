@@ -20,10 +20,6 @@ import {
   SingleResultPromise,
 } from "../../../util/promise"
 
-import {
-  ContractHelper
-} from "./contract-helper";
-
 var TodoSol = require("./contracts/todo.sol");
 
 console.log(TodoSol);
@@ -35,6 +31,10 @@ console.log(TodoListsContract);
 import {
   EthDBArgs,
 } from "./constants";
+
+import {
+  ContractHelper
+} from "./wait-for-vars/wait-for-contract";
 
 import {
   waitForWindow

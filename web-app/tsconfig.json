@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "outDir": "./temp/",
+    "outDir": "./dist/",
     "lib": ["es5", "es6", "es2015", "dom"],
     "noImplicitAny": true,
     "module": "commonjs",

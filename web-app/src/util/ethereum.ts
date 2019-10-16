@@ -1,6 +1,7 @@
 import Web3  from "web3";
 import { EventEmitter as Web3EventEmitter }  from "web3/types";
 import { TransactionObject } from "web3/eth/types";
+import Contract from "web3/eth/contract";
 import {
   BigNumber
 } from "./big-number";
@@ -178,6 +179,7 @@ export {
   Web3,
   Web3EventEmitter,
   TransactionObject,
+  Contract,
   ContractImport,
   ContractImportClass,
   findContract,
