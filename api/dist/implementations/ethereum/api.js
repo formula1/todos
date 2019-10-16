@@ -16,7 +16,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var ethereum_1 = require("../../util/ethereum");
 var events_1 = require("../../util/events");
 var promise_1 = require("../../util/promise");
-var TodoSol = require("./contracts/todo.sol");
+var TodoSol = require("../../../contracts/todo.sol");
 console.log(TodoSol);
 var TodoListsContract = TodoSol.contracts["todo.sol"].TodoLists;
 console.log(TodoListsContract);

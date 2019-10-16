@@ -2,7 +2,8 @@
   "name": "todo-apis",
   "version": "1.0.0",
   "description": "",
-  "main": "/dist/index.js",
+  "main": "./dist/index.js",
+  "types": "./src/index.ts",
   "browserify": {
     "transform": [
       "require-solidity"

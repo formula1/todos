@@ -19,7 +19,7 @@ import {
   SingleResultPromise,
 } from "../../util/promise"
 
-var TodoSol = require("./contracts/todo.sol");
+var TodoSol = require("../../../contracts/todo.sol");
 
 console.log(TodoSol);
 
