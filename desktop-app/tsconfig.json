@@ -1,0 +1,36 @@
+{
+  "parserOptions": {
+    "sourceType": "module"
+  },
+  "compilerOptions": {
+    "outDir": "./dist/hidden",
+    "lib": [
+      "es5",
+      "es6",
+      "es2015",
+      "dom"
+    ],
+    "noImplicitAny": true,
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "removeComments": true,
+    "preserveConstEnums": true,
+    "sourceMap": true,
+    "target": "es5",
+    "jsx": "react"
+  },
+  "typeRoots": [
+    "./node_modules/@types",
+    "./@types"
+  ],
+  "files": [
+    "scripts/electron/index.ts",
+    "scripts/preload/index.ts",
+    "scripts/render/index.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "**/*.spec.ts"
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "parserOptions": {
+    "sourceType": "module"
+  },
+  "compilerOptions": {
+    "outDir": "../../dist/hidden/preload",
+    "lib": [
+      "es5",
+      "es6",
+      "es2015",
+      "dom"
+    ],
+    "noImplicitAny": true,
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "removeComments": true,
+    "preserveConstEnums": true,
+    "sourceMap": true,
+    "target": "es6",
+    "jsx": "react"
+  },
+  "typeRoots": [
+    "./node_modules/@types",
+    "./@types"
+  ],
+  "files": [
+    "./index.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "**/*.spec.ts"
+  ]
+}

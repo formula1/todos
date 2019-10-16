@@ -19,11 +19,11 @@ function run() {
             + (i++).toString(32)
             + Math.random().toString(32).substring(2));
     }
-    var MongoTodoAPI = (function () {
-        function MongoTodoAPI() {
+    var JSONObjectTodoApi = (function () {
+        function JSONObjectTodoApi() {
             this.listeners = [];
         }
-        MongoTodoAPI.prototype.on = function (listener) {
+        JSONObjectTodoApi.prototype.on = function (listener) {
             var _this = this;
             this.listeners.push(listener);
             return function () {
@@ -32,27 +32,27 @@ function run() {
                 });
             };
         };
-        MongoTodoAPI.prototype.emit = function (value) {
+        JSONObjectTodoApi.prototype.emit = function (value) {
             this.listeners.forEach(function (l) {
                 l(value);
             });
         };
-        MongoTodoAPI.prototype.r_List = function () {
+        JSONObjectTodoApi.prototype.r_List = function () {
             return promise_1.Promise.resolve(Object.keys(this.values));
         };
-        MongoTodoAPI.prototype.r_Single = function (id) {
+        JSONObjectTodoApi.prototype.r_Single = function (id) {
             return promise_1.Promise.resolve(this.values[id]);
         };
-        MongoTodoAPI.prototype.r_All = function () {
+        JSONObjectTodoApi.prototype.r_All = function () {
             return promise_1.Promise.resolve(Object.values(this.values));
         };
-        MongoTodoAPI.prototype.c_createItem = function (itemInit) {
+        JSONObjectTodoApi.prototype.c_createItem = function (itemInit) {
             var id = uniqueID();
             this.values[id] = __assign(__assign({}, itemInit), { _id: id });
             this.emit("update");
             return promise_1.Promise.resolve(this.values[id]);
         };
-        MongoTodoAPI.prototype.u_finishItem = function (id) {
+        JSONObjectTodoApi.prototype.u_finishItem = function (id) {
             if (!(id in this.values)) {
                 return promise_1.Promise.reject("Non existant");
             }
@@ -65,7 +65,7 @@ function run() {
             this.emit("update");
             return promise_1.Promise.resolve(value);
         };
-        MongoTodoAPI.prototype.d_deleteItem = function (id) {
+        JSONObjectTodoApi.prototype.d_deleteItem = function (id) {
             if (!(id in this.values)) {
                 return promise_1.Promise.reject("Non existant");
             }
@@ -74,10 +74,10 @@ function run() {
             this.emit("update");
             return promise_1.Promise.resolve(value);
         };
-        return MongoTodoAPI;
+        return JSONObjectTodoApi;
     }());
     ;
-    var api = new MongoTodoAPI();
+    var api = new JSONObjectTodoApi();
     api.on(function () {
         self.postMessage(JSON.stringify({
             type: "event",

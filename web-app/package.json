@@ -13,7 +13,6 @@
     "build:ugly": "terser ./dist/hidden.build.js -o ./dist/hidden.ugly.js --compress --mangle --sourcemap \"filename='./dist/hidden.ugly.min.js.map',url='hidden.ugly.min.js.map'\"",
     "build:disc": "discify ./dist/hidden.build.js > ./dist/hidden.stats.html",
     "build:disc-ugly": "discify ./dist/hidden.ugly.js > ./dist/hidden.ugly-stats.html",
-
     "sol:clean": "rimraf ./dist/ethereum",
     "sol": "run-s sol:*",
     "sol:build": "run-s sol:build:*",
@@ -63,6 +62,7 @@
     "redux": "^4.0.4",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.3.0",
+    "todo-apis": "file:../api",
     "web3": "^1.2.1",
     "web3-eth": "^1.2.1"
   }

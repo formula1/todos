@@ -23,6 +23,8 @@ const getDbArgs: IndexedDBArgs = {
 };
 
 
+
 export {
+  TODO_OBJECT_STORE_NAME,
   getDbArgs
 };
