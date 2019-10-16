@@ -51,7 +51,9 @@ export function run(){
 
     public c_createItem(itemInit: TodoInit): Promise<Todo>{
       const id = uniqueID();
-      this.values[id] = {...itemInit, _id: id};
+      const item = JSON.parse(JSON.stringify(itemInit));
+      item._id = id;
+      this.values[id] = item;
       this.emit("update");
       return Promise.resolve(this.values[id]);
     }
