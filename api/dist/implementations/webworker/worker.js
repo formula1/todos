@@ -1,0 +1,133 @@
+"use strict";
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var promise_1 = require("../../util/promise");
+function run() {
+    var i = 0;
+    function uniqueID() {
+        return (Date.now().toString(32)
+            + (i++).toString(32)
+            + Math.random().toString(32).substring(2));
+    }
+    var MongoTodoAPI = (function () {
+        function MongoTodoAPI() {
+            this.listeners = [];
+        }
+        MongoTodoAPI.prototype.on = function (listener) {
+            var _this = this;
+            this.listeners.push(listener);
+            return function () {
+                _this.listeners.filter(function (l) {
+                    return l != listener;
+                });
+            };
+        };
+        MongoTodoAPI.prototype.emit = function (value) {
+            this.listeners.forEach(function (l) {
+                l(value);
+            });
+        };
+        MongoTodoAPI.prototype.r_List = function () {
+            return promise_1.Promise.resolve(Object.keys(this.values));
+        };
+        MongoTodoAPI.prototype.r_Single = function (id) {
+            return promise_1.Promise.resolve(this.values[id]);
+        };
+        MongoTodoAPI.prototype.r_All = function () {
+            return promise_1.Promise.resolve(Object.values(this.values));
+        };
+        MongoTodoAPI.prototype.c_createItem = function (itemInit) {
+            var id = uniqueID();
+            this.values[id] = __assign(__assign({}, itemInit), { _id: id });
+            this.emit("update");
+            return promise_1.Promise.resolve(this.values[id]);
+        };
+        MongoTodoAPI.prototype.u_finishItem = function (id) {
+            if (!(id in this.values)) {
+                return promise_1.Promise.reject("Non existant");
+            }
+            var value = this.values[id];
+            if (value.finished) {
+                return promise_1.Promise.reject(new Error("already finished"));
+            }
+            value.finished = Date.now();
+            this.values[id] = value;
+            this.emit("update");
+            return promise_1.Promise.resolve(value);
+        };
+        MongoTodoAPI.prototype.d_deleteItem = function (id) {
+            if (!(id in this.values)) {
+                return promise_1.Promise.reject("Non existant");
+            }
+            var value = this.values[id];
+            delete this.values[id];
+            this.emit("update");
+            return promise_1.Promise.resolve(value);
+        };
+        return MongoTodoAPI;
+    }());
+    ;
+    var api = new MongoTodoAPI();
+    api.on(function () {
+        self.postMessage(JSON.stringify({
+            type: "event",
+            path: "update"
+        }), "*");
+    });
+    function handlePromise(initData, p) {
+        p.then(function (value) {
+            self.postMessage(JSON.stringify({
+                type: "request",
+                status: "result",
+                id: initData.id,
+                value: value
+            }), "*");
+        }, function (err) {
+            self.postMessage(JSON.stringify({
+                type: "request",
+                status: "error",
+                id: initData.id,
+                value: err.toString()
+            }), "*");
+        });
+    }
+    self.onmessage = function (e) {
+        var data = JSON.parse(e.data);
+        if (data.type === "request") {
+            if (data.status === "init") {
+                switch (data.path) {
+                    case "list":
+                        return handlePromise(data, api.r_List.apply(api, data.args));
+                    case "single":
+                        return handlePromise(data, api.r_Single.apply(api, data.args));
+                    case "all":
+                        return handlePromise(data, api.r_All.apply(api, data.args));
+                    case "create":
+                        return handlePromise(data, api.c_createItem.apply(api, data.args));
+                    case "finish":
+                        return handlePromise(data, api.u_finishItem.apply(api, data.args));
+                    case "delete":
+                        return handlePromise(data, api.d_deleteItem.apply(api, data.args));
+                    default:
+                        self.postMessage(JSON.stringify({
+                            type: "request",
+                            status: "error",
+                            id: data.id,
+                            value: "route not found"
+                        }), "*");
+                }
+            }
+        }
+    };
+}
+exports.run = run;
