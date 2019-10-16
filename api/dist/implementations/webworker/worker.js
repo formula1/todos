@@ -73,7 +73,7 @@ function run() {
         self.postMessage(JSON.stringify({
             type: "event",
             path: "update"
-        }), "*");
+        }));
     });
     function handlePromise(initData, p) {
         p.then(function (value) {
@@ -82,14 +82,14 @@ function run() {
                 status: "result",
                 id: initData.id,
                 value: value
-            }), "*");
+            }));
         }, function (err) {
             self.postMessage(JSON.stringify({
                 type: "request",
                 status: "error",
                 id: initData.id,
                 value: err.toString()
-            }), "*");
+            }));
         });
     }
     self.onmessage = function (e) {

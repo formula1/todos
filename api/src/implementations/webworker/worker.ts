@@ -5,6 +5,8 @@ import {
   TodoInit
 } from "../../types/todo";
 
+type postMessageFn = (str: string)=>any;
+
 export function run(){
 
   var i = 0;
@@ -84,27 +86,27 @@ export function run(){
   const api = new JSONObjectTodoApi();
 
   api.on(()=>{
-    self.postMessage(JSON.stringify({
+    (self.postMessage as postMessageFn)(JSON.stringify({
       type: "event",
       path: "update"
-    }), "*")
+    }))
   })
 
   function handlePromise(initData: any, p: Promise<any>){
     p.then((value)=>{
-      self.postMessage(JSON.stringify({
+      (self.postMessage as postMessageFn)(JSON.stringify({
         type: "request",
         status: "result",
         id: initData.id,
         value: value
-      }), "*")
+      }))
     }, (err)=>{
-      self.postMessage(JSON.stringify({
+      (self.postMessage as postMessageFn)(JSON.stringify({
         type: "request",
         status: "error",
         id: initData.id,
         value: err.toString()
-      }), "*")
+      }))
     })
   }
 
