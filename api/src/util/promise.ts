@@ -1,4 +1,3 @@
-import { Promise } from "es6-promise";
 
 enum PROMISE_RESULT {
   PENDING = "PENDING",
@@ -15,7 +14,7 @@ class SingleResultPromise<ResultType>{
   private error: void|any
   private waiters: Array<[Listener<ResultType>, Listener<any>]> = []
 
-  constructor(p?: Promise<any>){
+  constructor(p: void | Promise<any>){
     if(p){
       this.setPromise(p);
     }
@@ -55,6 +54,5 @@ class SingleResultPromise<ResultType>{
 }
 
 export {
-  SingleResultPromise,
-  Promise
+  SingleResultPromise
 };

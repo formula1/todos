@@ -1,4 +1,3 @@
-import { Promise } from "./promise";
 
 declare global {
     interface Window {

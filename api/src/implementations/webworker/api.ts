@@ -8,10 +8,6 @@ import {
 } from "../../types/todo";
 
 import {
-  Promise,
-} from "../../util/promise"
-
-import {
   uniqueID,
 } from "../../util/db-tools"
 

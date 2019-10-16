@@ -1,7 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var es6_promise_1 = require("es6-promise");
-exports.Promise = es6_promise_1.Promise;
 var PROMISE_RESULT;
 (function (PROMISE_RESULT) {
     PROMISE_RESULT["PENDING"] = "PENDING";
@@ -37,7 +35,7 @@ var SingleResultPromise = (function () {
     };
     SingleResultPromise.prototype.waitForResult = function () {
         var _this = this;
-        return new es6_promise_1.Promise(function (res, rej) {
+        return new Promise(function (res, rej) {
             switch (_this.status) {
                 case PROMISE_RESULT.PENDING:
                     return _this.waiters.push([res, rej]);

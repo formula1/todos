@@ -5,10 +5,6 @@ import {
   TodoInit
 } from "../../types/todo";
 
-import {
-  Promise,
-} from "../../util/promise"
-
 export function run(){
 
   var i = 0;
@@ -23,7 +19,7 @@ export function run(){
   type Listener = (value?: any)=>any;
 
 
-  class MongoTodoAPI implements ITodoAPI {
+  class JSONObjectTodoApi implements ITodoAPI {
     private values: { [key:string]: Todo }
     private listeners: Array<Listener> = [];
 
@@ -83,7 +79,7 @@ export function run(){
     }
   };
 
-  const api = new MongoTodoAPI();
+  const api = new JSONObjectTodoApi();
 
   api.on(()=>{
     self.postMessage(JSON.stringify({

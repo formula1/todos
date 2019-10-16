@@ -6,10 +6,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var web3_1 = __importDefault(require("web3"));
 exports.Web3 = web3_1.default;
 var big_number_1 = require("./big-number");
-var promise_1 = require("./promise");
 var EC_DEBUG = "ETHEREUM_CONTRACT:";
 function findContract(web3, contractCode) {
-    return promise_1.Promise.resolve().then(function () {
+    return Promise.resolve().then(function () {
         return web3.eth.getBlockNumber();
     }).then(function (blockNumber) {
         console.log(EC_DEBUG, "TOTAL BLOCKNUMBER", blockNumber);
@@ -17,7 +16,7 @@ function findContract(web3, contractCode) {
         for (var i = 0; i <= blockNumber; i++) {
             blocks.push(getTestTransactionsFromBlock(i, contractCode));
         }
-        return promise_1.Promise.all(blocks);
+        return Promise.all(blocks);
     }).then(function (contractsAddresses) {
         var addresses = contractsAddresses.reduce(function (allAddresses, blockAddresses) {
             return allAddresses.concat(blockAddresses);
@@ -32,7 +31,7 @@ function findContract(web3, contractCode) {
             for (var i = 0; i < transCount; i++) {
                 ps.push(getAndTestTransaction(blockNumber, i, contractCode));
             }
-            return promise_1.Promise.all(ps);
+            return Promise.all(ps);
         }).then(function (resolvedPromises) {
             return (resolvedPromises.filter(function (value) {
                 console.log("test transaction", value);
@@ -41,7 +40,7 @@ function findContract(web3, contractCode) {
         });
     }
     function getAndTestTransaction(blockNumber, transCount, contractCode) {
-        return promise_1.Promise.resolve().then(function () {
+        return Promise.resolve().then(function () {
             return web3.eth.getTransactionFromBlock(blockNumber, transCount);
         }).then(function (transactionInfo) {
             if (transactionInfo.input === "0x") {
@@ -76,7 +75,7 @@ function findContract(web3, contractCode) {
 exports.findContract = findContract;
 function tryToSendTransaction(web3, transaction) {
     console.log("attempting to send");
-    return promise_1.Promise.all([
+    return Promise.all([
         transaction.estimateGas({ gas: 5000000000 }).then(function (gas) {
             console.log("estimated gas:", gas);
             return gas;

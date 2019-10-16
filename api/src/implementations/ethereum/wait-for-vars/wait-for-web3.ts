@@ -1,4 +1,3 @@
-import { Promise } from "../../../util/promise"
 
 import {
   Web3,

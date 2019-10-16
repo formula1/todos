@@ -1,9 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var promise_1 = require("../../../util/promise");
 var ethereum_1 = require("../../../util/ethereum");
 function waitForWeb3Users(win, url) {
-    return promise_1.Promise.resolve().then(function () {
+    return Promise.resolve().then(function () {
         if (typeof win.ethereum) {
             var web3_1 = new ethereum_1.Web3(win.ethereum);
             return win.ethereum.enable().then(function (accounts) {

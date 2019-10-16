@@ -24,9 +24,6 @@ type ContractImportClass = {
   }
 }
 
-
-import { Promise } from "./promise";
-
 const EC_DEBUG = "ETHEREUM_CONTRACT:"
 
 function findContract(web3: Web3, contractCode: string): Promise<Array<string>>{

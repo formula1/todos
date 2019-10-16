@@ -15,7 +15,6 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var events_1 = require("events");
 var indexeddb_1 = require("../../util/indexeddb");
-var promise_1 = require("../../util/promise");
 var db_tools_1 = require("../../util/db-tools");
 var constants_1 = require("./constants");
 var IndexedDBTodoAPI = (function (_super) {
@@ -33,7 +32,7 @@ var IndexedDBTodoAPI = (function (_super) {
     };
     IndexedDBTodoAPI.prototype.r_List = function () {
         return this.getDB().then(function (db) {
-            return new promise_1.Promise(function (res, rej) {
+            return new Promise(function (res, rej) {
                 var transaction = db.transaction([constants_1.TODO_OBJECT_STORE_NAME], "readwrite");
                 var objectStore = transaction.objectStore(constants_1.TODO_OBJECT_STORE_NAME);
                 var request = objectStore.getAllKeys();
@@ -47,7 +46,7 @@ var IndexedDBTodoAPI = (function (_super) {
     };
     IndexedDBTodoAPI.prototype.r_Single = function (id) {
         return this.getDB().then(function (db) {
-            return new promise_1.Promise(function (res, rej) {
+            return new Promise(function (res, rej) {
                 var transaction = db.transaction([constants_1.TODO_OBJECT_STORE_NAME], "readwrite");
                 var objectStore = transaction.objectStore(constants_1.TODO_OBJECT_STORE_NAME);
                 var request = objectStore.get(id);
@@ -61,7 +60,7 @@ var IndexedDBTodoAPI = (function (_super) {
     };
     IndexedDBTodoAPI.prototype.r_All = function () {
         return this.getDB().then(function (db) {
-            return new promise_1.Promise(function (res, rej) {
+            return new Promise(function (res, rej) {
                 var transaction = db.transaction([constants_1.TODO_OBJECT_STORE_NAME], "readwrite");
                 var objectStore = transaction.objectStore(constants_1.TODO_OBJECT_STORE_NAME);
                 var request = objectStore.getAll();
@@ -76,7 +75,7 @@ var IndexedDBTodoAPI = (function (_super) {
     IndexedDBTodoAPI.prototype.c_createItem = function (item) {
         var _this = this;
         return this.getDB().then(function (db) {
-            return new promise_1.Promise(function (res, rej) {
+            return new Promise(function (res, rej) {
                 item._id = db_tools_1.uniqueID();
                 var transaction = db.transaction([constants_1.TODO_OBJECT_STORE_NAME], "readwrite");
                 var objectStore = transaction.objectStore(constants_1.TODO_OBJECT_STORE_NAME);
@@ -94,7 +93,7 @@ var IndexedDBTodoAPI = (function (_super) {
     IndexedDBTodoAPI.prototype.u_finishItem = function (id) {
         var _this = this;
         return this.getDB().then(function (db) {
-            return new promise_1.Promise(function (res, rej) {
+            return new Promise(function (res, rej) {
                 var transaction = db.transaction([constants_1.TODO_OBJECT_STORE_NAME], "readwrite");
                 var objectStore = transaction.objectStore(constants_1.TODO_OBJECT_STORE_NAME);
                 var request = objectStore.get(id);
@@ -105,7 +104,7 @@ var IndexedDBTodoAPI = (function (_super) {
             });
         }).then(function (_a) {
             var objectStore = _a[0], event = _a[1];
-            return new promise_1.Promise(function (res, rej) {
+            return new Promise(function (res, rej) {
                 var data = event.target.result;
                 data.finished = Date.now();
                 var requestUpdate = objectStore.put(data);
@@ -122,7 +121,7 @@ var IndexedDBTodoAPI = (function (_super) {
     IndexedDBTodoAPI.prototype.d_deleteItem = function (id) {
         var _this = this;
         return this.getDB().then(function (db) {
-            return new promise_1.Promise(function (res, rej) {
+            return new Promise(function (res, rej) {
                 var objectStore = db.transaction([constants_1.TODO_OBJECT_STORE_NAME], "readwrite")
                     .objectStore(constants_1.TODO_OBJECT_STORE_NAME);
                 var request = objectStore.get(id);
@@ -133,7 +132,7 @@ var IndexedDBTodoAPI = (function (_super) {
             });
         }).then(function (_a) {
             var objectStore = _a[0], event = _a[1];
-            return new promise_1.Promise(function (res, rej) {
+            return new Promise(function (res, rej) {
                 var data = event.target.result;
                 var requestUpdate = objectStore.delete(id);
                 requestUpdate.onerror = rej;

@@ -11,7 +11,6 @@ var __assign = (this && this.__assign) || function () {
     return __assign.apply(this, arguments);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var promise_1 = require("../../util/promise");
 function run() {
     var i = 0;
     function uniqueID() {
@@ -19,11 +18,11 @@ function run() {
             + (i++).toString(32)
             + Math.random().toString(32).substring(2));
     }
-    var MongoTodoAPI = (function () {
-        function MongoTodoAPI() {
+    var JSONObjectTodoApi = (function () {
+        function JSONObjectTodoApi() {
             this.listeners = [];
         }
-        MongoTodoAPI.prototype.on = function (listener) {
+        JSONObjectTodoApi.prototype.on = function (listener) {
             var _this = this;
             this.listeners.push(listener);
             return function () {
@@ -32,52 +31,52 @@ function run() {
                 });
             };
         };
-        MongoTodoAPI.prototype.emit = function (value) {
+        JSONObjectTodoApi.prototype.emit = function (value) {
             this.listeners.forEach(function (l) {
                 l(value);
             });
         };
-        MongoTodoAPI.prototype.r_List = function () {
-            return promise_1.Promise.resolve(Object.keys(this.values));
+        JSONObjectTodoApi.prototype.r_List = function () {
+            return Promise.resolve(Object.keys(this.values));
         };
-        MongoTodoAPI.prototype.r_Single = function (id) {
-            return promise_1.Promise.resolve(this.values[id]);
+        JSONObjectTodoApi.prototype.r_Single = function (id) {
+            return Promise.resolve(this.values[id]);
         };
-        MongoTodoAPI.prototype.r_All = function () {
-            return promise_1.Promise.resolve(Object.values(this.values));
+        JSONObjectTodoApi.prototype.r_All = function () {
+            return Promise.resolve(Object.values(this.values));
         };
-        MongoTodoAPI.prototype.c_createItem = function (itemInit) {
+        JSONObjectTodoApi.prototype.c_createItem = function (itemInit) {
             var id = uniqueID();
             this.values[id] = __assign(__assign({}, itemInit), { _id: id });
             this.emit("update");
-            return promise_1.Promise.resolve(this.values[id]);
+            return Promise.resolve(this.values[id]);
         };
-        MongoTodoAPI.prototype.u_finishItem = function (id) {
+        JSONObjectTodoApi.prototype.u_finishItem = function (id) {
             if (!(id in this.values)) {
-                return promise_1.Promise.reject("Non existant");
+                return Promise.reject("Non existant");
             }
             var value = this.values[id];
             if (value.finished) {
-                return promise_1.Promise.reject(new Error("already finished"));
+                return Promise.reject(new Error("already finished"));
             }
             value.finished = Date.now();
             this.values[id] = value;
             this.emit("update");
-            return promise_1.Promise.resolve(value);
+            return Promise.resolve(value);
         };
-        MongoTodoAPI.prototype.d_deleteItem = function (id) {
+        JSONObjectTodoApi.prototype.d_deleteItem = function (id) {
             if (!(id in this.values)) {
-                return promise_1.Promise.reject("Non existant");
+                return Promise.reject("Non existant");
             }
             var value = this.values[id];
             delete this.values[id];
             this.emit("update");
-            return promise_1.Promise.resolve(value);
+            return Promise.resolve(value);
         };
-        return MongoTodoAPI;
+        return JSONObjectTodoApi;
     }());
     ;
-    var api = new MongoTodoAPI();
+    var api = new JSONObjectTodoApi();
     api.on(function () {
         self.postMessage(JSON.stringify({
             type: "event",

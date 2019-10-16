@@ -14,10 +14,6 @@ import {
 } from "../../util/fetch";
 
 import {
-  Promise,
-} from "../../util/promise"
-
-import {
   FetchDBArgs,
   LiveDBArgs
 } from "./constants";

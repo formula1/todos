@@ -6,7 +6,6 @@ import {
 } from "../../../util/ethereum";
 
 import {
-  Promise,
   SingleResultPromise,
 } from "../../../util/promise"
 

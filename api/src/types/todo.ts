@@ -1,9 +1,4 @@
 
-
-import {
-  Promise,
-} from "../util/promise"
-
 export interface TodoInit {
   created: number;
   finished: number;

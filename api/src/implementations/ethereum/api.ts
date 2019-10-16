@@ -14,7 +14,6 @@ import {
 } from "../../types/todo";
 
 import {
-  Promise,
   SingleResultPromise,
 } from "../../util/promise"
 

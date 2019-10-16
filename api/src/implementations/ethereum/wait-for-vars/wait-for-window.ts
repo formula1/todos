@@ -1,6 +1,5 @@
-import { Promise } from "../../../util/promise"
 
-export function waitForWindow(): Promise<Window>{
+export function waitForWindow(): Promise<Window|any>{
   return Promise.race([
       new Promise((res, rej)=>{
       if(document.readyState === "complete"){

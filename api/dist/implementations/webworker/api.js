@@ -17,7 +17,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var events_1 = require("events");
-var promise_1 = require("../../util/promise");
 var db_tools_1 = require("../../util/db-tools");
 var worker_1 = require("./worker");
 var ts_inline_webworker_1 = __importDefault(require("ts-inline-webworker"));
@@ -45,7 +44,7 @@ var WebWorkerTodoAPI = (function (_super) {
             id: id,
             args: args
         };
-        return new promise_1.Promise(function (res, rej) {
+        return new Promise(function (res, rej) {
             _this.idListeners[id] = [res, rej];
             _this.worker.postMessage(JSON.stringify(message));
         });

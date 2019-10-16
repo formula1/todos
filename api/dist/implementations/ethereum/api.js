@@ -68,7 +68,7 @@ var EthTodoAPI = (function (_super) {
         });
     };
     EthTodoAPI.prototype.r_List = function () {
-        return promise_1.Promise.all([
+        return Promise.all([
             this.r_Count(),
             this.contractResolver.waitForResult()
         ]).then(function (_a) {
@@ -80,7 +80,7 @@ var EthTodoAPI = (function (_super) {
             for (var i = 0; i < count; i++) {
                 uids.push(contract.methods.allTodos(i).call());
             }
-            return promise_1.Promise.all(uids);
+            return Promise.all(uids);
         });
     };
     EthTodoAPI.prototype.r_Single = function (id) {
@@ -101,13 +101,13 @@ var EthTodoAPI = (function (_super) {
     EthTodoAPI.prototype.r_All = function () {
         var _this = this;
         return this.r_List().then(function (list) {
-            return promise_1.Promise.all(list.map(function (id) {
+            return Promise.all(list.map(function (id) {
                 return _this.r_Single(id);
             }));
         });
     };
     EthTodoAPI.prototype.c_createItem = function (item) {
-        return promise_1.Promise.all([
+        return Promise.all([
             this.web3Resolver.waitForResult(),
             this.contractResolver.waitForResult()
         ]).then(function (_a) {
@@ -120,7 +120,7 @@ var EthTodoAPI = (function (_super) {
     };
     EthTodoAPI.prototype.u_finishItem = function (id) {
         console.log("attempting to finish:", id);
-        return promise_1.Promise.all([
+        return Promise.all([
             this.web3Resolver.waitForResult(),
             this.contractResolver.waitForResult()
         ]).then(function (_a) {
@@ -132,7 +132,7 @@ var EthTodoAPI = (function (_super) {
         });
     };
     EthTodoAPI.prototype.d_deleteItem = function (id) {
-        return promise_1.Promise.all([
+        return Promise.all([
             this.web3Resolver.waitForResult(),
             this.contractResolver.waitForResult()
         ]).then(function (_a) {

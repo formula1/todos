@@ -1,6 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var promise_1 = require("./promise");
 var indexedDB = (window.indexedDB
     || window.mozIndexedDB
     || window.webkitIndexedDB
@@ -29,7 +28,7 @@ function upgradeDB(_a) {
 }
 function getDatabase(_a) {
     var name = _a.name, version = _a.version, upgradeFns = _a.upgradeFns;
-    return new promise_1.Promise(function (res, rej) {
+    return new Promise(function (res, rej) {
         var request = indexedDB.open(name, version);
         request.onerror = rej;
         request.onupgradeneeded = function (event) {

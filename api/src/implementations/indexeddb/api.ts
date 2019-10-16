@@ -13,10 +13,6 @@ import {
 } from "../../util/indexeddb";
 
 import {
-  Promise,
-} from "../../util/promise"
-
-import {
   uniqueID,
 } from "../../util/db-tools"
 
