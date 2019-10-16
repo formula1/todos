@@ -23,7 +23,7 @@ export function run(){
   type Listener = (value?: any)=>any;
 
 
-  class JSONObjectTodoApi implements ITodoAPI {
+  class MongoTodoAPI implements ITodoAPI {
     private values: { [key:string]: Todo }
     private listeners: Array<Listener> = [];
 
@@ -83,7 +83,7 @@ export function run(){
     }
   };
 
-  const api = new JSONObjectTodoApi();
+  const api = new MongoTodoAPI();
 
   api.on(()=>{
     self.postMessage(JSON.stringify({
