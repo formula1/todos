@@ -19,7 +19,7 @@ import {
   PUBLIC_SERVER_PORT
 } from "./constants/development";
 
-import { EthTodoAPI } from "todo-apis";
+import { WebWorkerTodoAPI } from "todo-apis";
 
 // import { EthTodoAPI } from "./todo/api/ethereum/api";
 // import { TodoAPI } from "./todo/api/fetch/api";
@@ -35,9 +35,12 @@ const store = makeStore(combineReducers({
   [LIGHTBOX_REDUCER_NAME]: LightBoxReducer
 }));
 
-const api = new EthTodoAPI(
-  ethDBArgs
-);
+const api = new WebWorkerTodoAPI();
+
+
+// const api = new EthTodoAPI(
+//   ethDBArgs
+// );
 
 // const api = new TodoAPI({
 //   ...getDbArgs,

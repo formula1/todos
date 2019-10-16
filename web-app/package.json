@@ -6,7 +6,7 @@
   "scripts": {
     "start:dev": "run-p start:dev:*",
     "start:dev:http": "http-server ./dist",
-    "start:dev:watch": "watch 'npm run build:ts' ./src",
+    "start-:dev:watch": "watch 'npm run build:ts' ./src",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "run-s build:*",
     "build:ts": "browserify --full-paths ./src/index.tsx --debug -t [envlocalify --envfile=../shared/public.env ] -t require-solidity -t browserify-css -p [ tsify -p ./tsconfig.json ] > ./dist/hidden.build.js && echo \"finished build\"",
