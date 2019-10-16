@@ -5,8 +5,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var web3_1 = __importDefault(require("web3"));
 exports.Web3 = web3_1.default;
-var contract_1 = __importDefault(require("web3/eth/contract"));
-exports.Contract = contract_1.default;
 var big_number_1 = require("./big-number");
 var promise_1 = require("./promise");
 var EC_DEBUG = "ETHEREUM_CONTRACT:";

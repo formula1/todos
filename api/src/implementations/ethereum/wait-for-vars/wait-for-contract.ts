@@ -1,7 +1,6 @@
 import {
   Web3,
   ContractImportClass,
-  Contract,
   findContract,
   tryToSendTransaction,
 } from "../../../util/ethereum";
@@ -10,6 +9,8 @@ import {
   Promise,
   SingleResultPromise,
 } from "../../../util/promise"
+
+import Contract from "web3/eth/contract";
 
 export class ContractHelper extends SingleResultPromise<Contract> {
   private web3: Web3;

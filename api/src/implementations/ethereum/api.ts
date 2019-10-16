@@ -2,7 +2,6 @@
 import {
   Web3,
   Web3EventEmitter,
-  Contract,
   tryToSendTransaction
 } from "../../util/ethereum";
 
