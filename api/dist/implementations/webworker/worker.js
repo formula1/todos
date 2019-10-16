@@ -20,6 +20,7 @@ function run() {
     }
     var JSONObjectTodoApi = (function () {
         function JSONObjectTodoApi() {
+            this.values = {};
             this.listeners = [];
         }
         JSONObjectTodoApi.prototype.on = function (listener) {

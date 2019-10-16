@@ -20,7 +20,7 @@ export function run(){
 
 
   class JSONObjectTodoApi implements ITodoAPI {
-    private values: { [key:string]: Todo }
+    private values: { [key:string]: Todo } = {};
     private listeners: Array<Listener> = [];
 
     on(listener: ()=>any){
