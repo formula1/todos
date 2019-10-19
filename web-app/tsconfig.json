@@ -8,7 +8,6 @@
     "allowSyntheticDefaultImports": true,
     "removeComments": true,
     "preserveConstEnums": true,
-    "sourceMap": true,
     "target": "es5",
     "jsx": "react"
   },

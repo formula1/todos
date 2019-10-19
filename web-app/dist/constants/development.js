@@ -1,0 +1,35 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var SERVER_HOST = process.env.SERVER_HOST;
+exports.SERVER_HOST = SERVER_HOST;
+var PUBLIC_UI_PORT = process.env.PUBLIC_UI_PORT;
+exports.PUBLIC_UI_PORT = PUBLIC_UI_PORT;
+var PUBLIC_SERVER_PROTOCOL = process.env.PUBLIC_SERVER_PROTOCOL;
+var PUBLIC_SERVER_HOSTNAME = process.env.PUBLIC_SERVER_HOSTNAME;
+var PUBLIC_SERVER_PORT = process.env.PUBLIC_SERVER_PORT;
+exports.PUBLIC_SERVER_PORT = PUBLIC_SERVER_PORT;
+var PUBLIC_LIVE_PROTOCOL = process.env.PUBLIC_LIVE_PROTOCOL;
+var PUBLIC_LIVE_HOSTNAME = process.env.PUBLIC_LIVE_HOSTNAME;
+var PUBLIC_LIVE_PORT = process.env.PUBLIC_LIVE_PORT;
+var PUBLIC_ETH_NODE_PROTOCOL = process.env.PUBLIC_LIVE_PROTOCOL;
+var PUBLIC_ETH_NODE_HOSTNAME = process.env.PUBLIC_ETH_NODE_HOSTNAME;
+var PUBLIC_ETH_NODE_PORT = process.env.PUBLIC_ETH_NODE_PORT;
+var TODO_CONTRACT_ADDRESS = process.env.TODO_CONTRACT_ADDRESS;
+var EXTERNAL_SHARED_HOSTNAME = process.env.EXTERNAL_SHARED_HOSTNAME;
+console.log(process.env);
+console.log(SERVER_HOST, PUBLIC_UI_PORT, PUBLIC_SERVER_PORT);
+var TODO_DATABASE_NAME = process.env.TODO_DATABASE_NAME;
+var TODO_COLLECTION_NAME = process.env.TODO_COLLECTION_NAME;
+var ethDBArgs = {
+    url: PUBLIC_ETH_NODE_PROTOCOL + "://" + EXTERNAL_SHARED_HOSTNAME + ":" + PUBLIC_ETH_NODE_PORT,
+    address: TODO_CONTRACT_ADDRESS
+};
+exports.ethDBArgs = ethDBArgs;
+var getDbArgs = {
+    url: PUBLIC_SERVER_PROTOCOL + "://" + EXTERNAL_SHARED_HOSTNAME + ":" + PUBLIC_SERVER_PORT
+};
+exports.getDbArgs = getDbArgs;
+var liveDBArgs = {
+    liveUrl: PUBLIC_LIVE_PROTOCOL + "://" + EXTERNAL_SHARED_HOSTNAME + ":" + PUBLIC_LIVE_PORT + "/mongodb/" + TODO_DATABASE_NAME + "/" + TODO_COLLECTION_NAME,
+};
+exports.liveDBArgs = liveDBArgs;
