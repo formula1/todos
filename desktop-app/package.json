@@ -1,0 +1,39 @@
+{
+  "name": "desktop-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/hidden/electron/index.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "run-s build:*",
+    "build:electron": "rimraf ./dist/hidden/electron && tsc --build ./src/electron",
+    "build:preload": "rimraf ./dist/hidden/preload && tsc --build ./src/preload",
+    "build:render": "browserify --full-paths ./src/render/index.ts --debug -t [envlocalify --envfile=../shared/public.env ] -t browserify-css -p [ tsify -p ./src/render/tsconfig.json ] > ./dist/hidden/render.js && echo \"finished build\""
+  },
+  "dependencies": {
+    "ui": "file:../web-app",
+    "web-app": "file:../web-app"
+  },
+  "devDependencies": {
+    "@types/node": "^12.11.1",
+    "electron": "^6.0.12",
+    "typescript": "^3.6.4",
+    "browserify": "^16.5.0",
+    "browserify-css": "^0.15.0",
+    "electron-builder": "^21.2.0",
+    "envlocalify": "^1.1.1",
+    "mkdirp": "^0.5.1",
+    "npm-run-all": "^4.1.5",
+    "react": "^16.10.2",
+    "react-dom": "^16.10.2",
+    "react-scripts": "^3.2.0",
+    "require-solidity": "^1.0.3",
+    "rimraf": "^3.0.0",
+    "serve": "^11.2.0",
+    "todo-apis": "file:../api",
+    "tsify": "^4.0.1"
+  },
+  "author": "",
+  "license": "ISC"
+}
