@@ -4,7 +4,8 @@ import {EventEmitter} from "events";
 import {
   ITodoAPI,
   Todo,
-  TodoInit
+  TodoInit,
+  Listener
 } from "../../types/todo";
 
 import {
@@ -20,11 +21,26 @@ import {
   TODO_OBJECT_STORE_NAME,
 } from "./constants";
 
-export class IndexedDBTodoAPI extends EventEmitter implements ITodoAPI {
+export class IndexedDBTodoAPI implements ITodoAPI {
   private args: IndexedDBArgs
+  private listeners: Array<Listener> = [];
+
+  listen(listener: (value:any)=>any){
+    this.listeners.push(listener);
+    return ()=>{
+      this.listeners.filter((l)=>{
+        return l != listener
+      })
+    }
+  }
+
+  emit(value?: any){
+    this.listeners.forEach((l)=>{
+      l(value)
+    })
+  }
   constructor(args: IndexedDBArgs){
-    super()
-    this.on("update", ()=>{
+    this.listen(()=>{
       console.log("updating");
     })
     this.args = args;

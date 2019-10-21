@@ -12,7 +12,7 @@ function run() {
             this.values = {};
             this.listeners = [];
         }
-        JSONObjectTodoApi.prototype.on = function (listener) {
+        JSONObjectTodoApi.prototype.listen = function (listener) {
             var _this = this;
             this.listeners.push(listener);
             return function () {
@@ -69,7 +69,7 @@ function run() {
     }());
     ;
     var api = new JSONObjectTodoApi();
-    api.on(function () {
+    api.listen(function () {
         self.postMessage(JSON.stringify({
             type: "event",
             path: "update"

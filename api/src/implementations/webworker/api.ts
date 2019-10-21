@@ -1,10 +1,9 @@
 
-import {EventEmitter} from "events";
-
 import {
   ITodoAPI,
   Todo,
-  TodoInit
+  TodoInit,
+  Listener
 } from "../../types/todo";
 
 import {
@@ -38,17 +37,33 @@ type MessageEvent = {
 
 type ResRej = [(value:any)=>any, (value:any)=>any];
 
-export class WebWorkerTodoAPI extends EventEmitter implements ITodoAPI  {
+export class WebWorkerTodoAPI implements ITodoAPI  {
   private worker:InlineWebWorker;
   private idListeners: {[id: string]: ResRej} = {};
 
+  private listeners: Array<Listener> = [];
+
+  listen(listener: (value:any)=>any){
+    this.listeners.push(listener);
+    return ()=>{
+      this.listeners.filter((l)=>{
+        return l != listener
+      })
+    }
+  }
+
+  emit(value?: any){
+    this.listeners.forEach((l)=>{
+      l(value)
+    })
+  }
+
   constructor(){
-    super()
     this.worker = new InlineWebWorker(run);
     this.worker.onmessage = (e)=>{
       this.resolveResponse(JSON.parse(e.data));
     }
-    this.on("update", ()=>{
+    this.listen(()=>{
       console.log("updating");
     })
   }

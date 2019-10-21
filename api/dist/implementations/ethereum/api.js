@@ -1,20 +1,6 @@
 "use strict";
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
 Object.defineProperty(exports, "__esModule", { value: true });
 var ethereum_1 = require("../../util/ethereum");
-var events_1 = require("../../util/events");
 var promise_1 = require("../../util/promise");
 var TodoSol = require("../../../contracts/todo.sol");
 console.log(TodoSol);
@@ -23,37 +9,50 @@ console.log(TodoListsContract);
 var wait_for_contract_1 = require("./wait-for-vars/wait-for-contract");
 var wait_for_window_1 = require("./wait-for-vars/wait-for-window");
 var wait_for_web3_1 = require("./wait-for-vars/wait-for-web3");
-var EthTodoAPI = (function (_super) {
-    __extends(EthTodoAPI, _super);
+var EthTodoAPI = (function () {
     function EthTodoAPI(args) {
-        var _this = _super.call(this) || this;
-        _this.ContractType = TodoListsContract;
+        var _this = this;
+        this.listeners = [];
+        this.ContractType = TodoListsContract;
         console.log(Object.keys(window));
-        _this.web3Resolver = new promise_1.SingleResultPromise(wait_for_window_1.waitForWindow().then(function (win) {
+        this.web3Resolver = new promise_1.SingleResultPromise(wait_for_window_1.waitForWindow().then(function (win) {
             return wait_for_web3_1.waitForWeb3Users(win, args.url);
         }));
-        _this.contractResolver = new wait_for_contract_1.ContractHelper();
-        _this.contractResolver.waitForResult().then(function (contract) {
+        this.contractResolver = new wait_for_contract_1.ContractHelper();
+        this.contractResolver.waitForResult().then(function (contract) {
             contract.events.ChangeEvent().on("data", function () {
                 console.log("new update event from contract");
                 _this.emit("update");
             });
             _this.r_Count();
         });
-        _this.web3Resolver.waitForResult().then(function (web3) {
+        this.web3Resolver.waitForResult().then(function (web3) {
             _this.web3 = web3;
             _this.contractResolver.setArgs(web3, TodoListsContract, []);
         });
-        _this.web3Resolver.waitForResult().then(function (web3) {
+        this.web3Resolver.waitForResult().then(function (web3) {
             _this.web3.currentProvider.publicConfigStore.on('update', function (update) {
                 console.log("configure event");
             });
         });
-        _this.on("update", function () {
+        this.listen(function () {
             console.log("updating");
         });
-        return _this;
     }
+    EthTodoAPI.prototype.listen = function (listener) {
+        var _this = this;
+        this.listeners.push(listener);
+        return function () {
+            _this.listeners.filter(function (l) {
+                return l != listener;
+            });
+        };
+    };
+    EthTodoAPI.prototype.emit = function (value) {
+        this.listeners.forEach(function (l) {
+            l(value);
+        });
+    };
     EthTodoAPI.prototype.deconstruct = function () {
         this.event.removeAllListeners("data")(this.web3).currentProvider.publicConfigStore.removeAllListeners();
     };
@@ -141,6 +140,6 @@ var EthTodoAPI = (function (_super) {
         });
     };
     return EthTodoAPI;
-}(events_1.EventEmitter));
+}());
 exports.EthTodoAPI = EthTodoAPI;
 ;

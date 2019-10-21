@@ -1,6 +1,7 @@
 
 import {
   ITodoAPI,
+  Listener,
   Todo,
   TodoInit
 } from "../../types/todo";
@@ -18,14 +19,11 @@ export function run(){
     );
   }
 
-  type Listener = (value?: any)=>any;
-
-
   class JSONObjectTodoApi implements ITodoAPI {
     private values: { [key:string]: Todo } = {};
     private listeners: Array<Listener> = [];
 
-    on(listener: ()=>any){
+    listen(listener: (value:any)=>any){
       this.listeners.push(listener);
       return ()=>{
         this.listeners.filter((l)=>{
@@ -85,7 +83,7 @@ export function run(){
 
   const api = new JSONObjectTodoApi();
 
-  api.on(()=>{
+  api.listen(()=>{
     (self.postMessage as postMessageFn)(JSON.stringify({
       type: "event",
       path: "update"

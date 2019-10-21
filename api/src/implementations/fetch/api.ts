@@ -4,7 +4,8 @@ import {EventEmitter} from "events";
 import {
   ITodoAPI,
   Todo,
-  TodoInit
+  TodoInit,
+  Listener
 } from "../../types/todo";
 
 import {
@@ -18,17 +19,33 @@ import {
   LiveDBArgs
 } from "./constants";
 
-export class FecthTodoAPI extends EventEmitter implements ITodoAPI  {
+export class FecthTodoAPI implements ITodoAPI  {
   private args: FetchDBArgs
   private liveConnection: WebSocket;
 
+  private listeners: Array<Listener> = [];
+
+  listen(listener: (value:any)=>any){
+    this.listeners.push(listener);
+    return ()=>{
+      this.listeners.filter((l)=>{
+        return l != listener
+      })
+    }
+  }
+
+  emit(value?: any){
+    this.listeners.forEach((l)=>{
+      l(value)
+    })
+  }
+
   constructor(args: FetchDBArgs & LiveDBArgs){
-    super()
     this.liveConnection = new WebSocket(args.liveUrl)
     this.liveConnection.onmessage = ()=>{
       this.emit("update");
     }
-    this.on("update", ()=>{
+    this.listen(()=>{
       console.log("updating");
     })
     console.log(args)

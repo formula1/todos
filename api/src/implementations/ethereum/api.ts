@@ -10,7 +10,8 @@ import {EventEmitter} from "../../util/events";
 import {
   ITodoAPI,
   Todo,
-  TodoInit
+  TodoInit,
+  Listener
 } from "../../types/todo";
 
 import {
@@ -40,7 +41,7 @@ import {
   waitForWeb3Users
 } from "./wait-for-vars/wait-for-web3";
 
-export class EthTodoAPI extends EventEmitter implements ITodoAPI {
+export class EthTodoAPI implements ITodoAPI {
   private helper: ContractHelper;
   private ContractType: {
     abi: Array<any>,
@@ -57,8 +58,25 @@ export class EthTodoAPI extends EventEmitter implements ITodoAPI {
   private contractResolver: ContractHelper;
 
 
+  private listeners: Array<Listener> = [];
+
+  listen(listener: (value:any)=>any){
+    this.listeners.push(listener);
+    return ()=>{
+      this.listeners.filter((l)=>{
+        return l != listener
+      })
+    }
+  }
+
+  emit(value?: any){
+    this.listeners.forEach((l)=>{
+      l(value)
+    })
+  }
+
+
   constructor(args: EthDBArgs){
-    super()
     this.ContractType = TodoListsContract;
     console.log(Object.keys(window));
 
@@ -94,7 +112,7 @@ export class EthTodoAPI extends EventEmitter implements ITodoAPI {
     })
 
 
-    this.on("update", ()=>{
+    this.listen(()=>{
       console.log("updating");
     })
   }

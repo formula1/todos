@@ -1,35 +1,34 @@
 "use strict";
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
 Object.defineProperty(exports, "__esModule", { value: true });
-var events_1 = require("events");
 var fetch_1 = require("../../util/fetch");
-var FecthTodoAPI = (function (_super) {
-    __extends(FecthTodoAPI, _super);
+var FecthTodoAPI = (function () {
     function FecthTodoAPI(args) {
-        var _this = _super.call(this) || this;
-        _this.liveConnection = new WebSocket(args.liveUrl);
-        _this.liveConnection.onmessage = function () {
+        var _this = this;
+        this.listeners = [];
+        this.liveConnection = new WebSocket(args.liveUrl);
+        this.liveConnection.onmessage = function () {
             _this.emit("update");
         };
-        _this.on("update", function () {
+        this.listen(function () {
             console.log("updating");
         });
         console.log(args);
-        _this.args = args;
-        return _this;
+        this.args = args;
     }
+    FecthTodoAPI.prototype.listen = function (listener) {
+        var _this = this;
+        this.listeners.push(listener);
+        return function () {
+            _this.listeners.filter(function (l) {
+                return l != listener;
+            });
+        };
+    };
+    FecthTodoAPI.prototype.emit = function (value) {
+        this.listeners.forEach(function (l) {
+            l(value);
+        });
+    };
     FecthTodoAPI.prototype.r_All = function () {
         return fetch_1.fetch(this.args.url + "/todo/request").then(fetch_1.handleResponse);
     };
@@ -53,6 +52,6 @@ var FecthTodoAPI = (function (_super) {
         return fetch_1.fetch(this.args.url + "/todo/delete/" + id).then(fetch_1.handleResponse);
     };
     return FecthTodoAPI;
-}(events_1.EventEmitter));
+}());
 exports.FecthTodoAPI = FecthTodoAPI;
 ;
