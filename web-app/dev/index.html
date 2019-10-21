@@ -8,5 +8,9 @@
   <div id="init" ></div>
   <div id="lightbox"></div>
   <script type="text/javascript" src="/hidden.build.js" ></script>
+  <script type="text/javascript">
+    const { WebWorkerTodoAPI } = require("todo-apis")
+    require("init").initRun(new WebWorkerTodoAPI(), "#init");
+  </script>
 </body>
 </html>

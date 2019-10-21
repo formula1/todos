@@ -34,6 +34,7 @@ class TodoCreateView extends React.Component {
             created: Date.now(),
             finished: 0,
           });
+          this.setState(JSONcopy(DEFAULT_STATE))
         }}>Create</button>
       </div>
     );

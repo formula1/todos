@@ -12,31 +12,65 @@ import { api_setAPI, r_listTodos } from "./todo/api/redux-promise/actions";
 import { LIGHTBOX_REDUCER_NAME } from "./util/ui/lightbox/redux/constants";
 import { default as LightBoxReducer} from "./util/ui/lightbox/redux/reducer";
 import { LightBoxRedux } from "./util/ui/lightbox/lightbox";
+//
+// import {
+//   SERVER_HOST,
+//   PUBLIC_UI_PORT,
+//   PUBLIC_SERVER_PORT
+// } from "./constants/development";
 
 import {
-  SERVER_HOST,
-  PUBLIC_UI_PORT,
-  PUBLIC_SERVER_PORT
-} from "./constants/development";
-
-import { WebWorkerTodoAPI } from "todo-apis";
+  ITodoAPI,
+ } from "todo-apis";
 
 // import { EthTodoAPI } from "./todo/api/ethereum/api";
 // import { TodoAPI } from "./todo/api/fetch/api";
-import { ethDBArgs, getDbArgs, liveDBArgs } from "./constants/development";
+// import { ethDBArgs, getDbArgs, liveDBArgs } from "./constants/development";
+
+// const api = new WebWorkerTodoAPI();
+
 
 console.log("before load")
 
 console.log((window as any).web3);
 
+function initRun(api: ITodoAPI, selector: string){
 
-const store = makeStore(combineReducers({
-  [TODO_REDUCER_NAME]: todoReducer,
-  [LIGHTBOX_REDUCER_NAME]: LightBoxReducer
-}));
+  const store = makeStore(combineReducers({
+    [TODO_REDUCER_NAME]: todoReducer,
+    [LIGHTBOX_REDUCER_NAME]: LightBoxReducer
+  }));
 
-const api = new WebWorkerTodoAPI();
+  function updateTodos(){
+    api.r_All().then((items)=>{
+      console.log("dispatching update", items)
+      store.dispatch(r_listTodos(items))
+    }).catch((error)=>{
+      console.error("requesting all/", error);
+    })
+  }
 
+  api.listen(()=>{
+    console.log("retrieving_all")
+    updateTodos()
+  })
+
+  store.dispatch(api_setAPI(api))
+  updateTodos()
+
+  ReactDOM.render(
+    <Provider store={store}>
+      <div>
+        <TodoPage />
+        <LightBoxRedux />
+      </div>
+    </Provider>,
+    document.querySelector(selector)
+  );
+
+}
+
+export {initRun};
 
 // const api = new EthTodoAPI(
 //   ethDBArgs
@@ -46,33 +80,6 @@ const api = new WebWorkerTodoAPI();
 //   ...getDbArgs,
 //   ...liveDBArgs
 // });
-
-function updateTodos(){
-  api.r_All().then((items)=>{
-    console.log("dispatching update", items)
-    store.dispatch(r_listTodos(items))
-  }).catch((error)=>{
-    console.error(error);
-  })
-}
-
-api.on("update", ()=>{
-  console.log("retrieving_all")
-  updateTodos()
-})
-
-store.dispatch(api_setAPI(api))
-updateTodos()
-
-ReactDOM.render(
-  <Provider store={store}>
-    <div>
-      <TodoPage />
-      <LightBoxRedux />
-    </div>
-  </Provider>,
-  document.querySelector("#init")
-);
 
 //
 // const { StackLayout } = require("./reusable/layouts");

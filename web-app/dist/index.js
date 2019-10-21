@@ -9,7 +9,6 @@ var __importStar = (this && this.__importStar) || function (mod) {
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __importStar(require("react"));
 var ReactDOM = __importStar(require("react-dom"));
@@ -26,26 +25,33 @@ var lightbox_1 = require("./util/ui/lightbox/lightbox");
 var todo_apis_1 = require("todo-apis");
 console.log("before load");
 console.log(window.web3);
-var store = redux_2.makeStore(redux_1.combineReducers((_a = {},
-    _a[constants_1.TODO_REDUCER_NAME] = reducer_1.default,
-    _a[constants_2.LIGHTBOX_REDUCER_NAME] = reducer_2.default,
-    _a)));
-var api = new todo_apis_1.WebWorkerTodoAPI();
-function updateTodos() {
-    api.r_All().then(function (items) {
-        console.log("dispatching update", items);
-        store.dispatch(actions_1.r_listTodos(items));
-    }).catch(function (error) {
-        console.error(error);
+function initRun() {
+    var _a;
+    var store = redux_2.makeStore(redux_1.combineReducers((_a = {},
+        _a[constants_1.TODO_REDUCER_NAME] = reducer_1.default,
+        _a[constants_2.LIGHTBOX_REDUCER_NAME] = reducer_2.default,
+        _a)));
+    var api = new todo_apis_1.WebWorkerTodoAPI();
+    function updateTodos() {
+        api.r_All().then(function (items) {
+            console.log("dispatching update", items);
+            store.dispatch(actions_1.r_listTodos(items));
+        }).catch(function (error) {
+            console.error("requesting all/", error);
+        });
+    }
+    api.on("update", function () {
+        console.log("retrieving_all");
+        updateTodos();
     });
-}
-api.on("update", function () {
-    console.log("retrieving_all");
+    store.dispatch(actions_1.api_setAPI(api));
     updateTodos();
-});
-store.dispatch(actions_1.api_setAPI(api));
-updateTodos();
-ReactDOM.render(React.createElement(react_redux_1.Provider, { store: store },
-    React.createElement("div", null,
-        React.createElement(todo_1.TodoPage, null),
-        React.createElement(lightbox_1.LightBoxRedux, null))), document.querySelector("#init"));
+    ReactDOM.render(React.createElement(react_redux_1.Provider, { store: store },
+        React.createElement("div", null,
+            React.createElement(todo_1.TodoPage, null),
+            React.createElement(lightbox_1.LightBoxRedux, null))), document.querySelector("#init"));
+}
+exports.initRun = initRun;
+if (require.main === module) {
+    initRun();
+}
