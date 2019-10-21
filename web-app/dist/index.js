@@ -22,16 +22,14 @@ var actions_1 = require("./todo/api/redux-promise/actions");
 var constants_2 = require("./util/ui/lightbox/redux/constants");
 var reducer_2 = __importDefault(require("./util/ui/lightbox/redux/reducer"));
 var lightbox_1 = require("./util/ui/lightbox/lightbox");
-var todo_apis_1 = require("todo-apis");
 console.log("before load");
 console.log(window.web3);
-function initRun() {
+function initRun(api, selector) {
     var _a;
     var store = redux_2.makeStore(redux_1.combineReducers((_a = {},
         _a[constants_1.TODO_REDUCER_NAME] = reducer_1.default,
         _a[constants_2.LIGHTBOX_REDUCER_NAME] = reducer_2.default,
         _a)));
-    var api = new todo_apis_1.WebWorkerTodoAPI();
     function updateTodos() {
         api.r_All().then(function (items) {
             console.log("dispatching update", items);
@@ -40,7 +38,7 @@ function initRun() {
             console.error("requesting all/", error);
         });
     }
-    api.on("update", function () {
+    api.listen(function () {
         console.log("retrieving_all");
         updateTodos();
     });
@@ -49,9 +47,6 @@ function initRun() {
     ReactDOM.render(React.createElement(react_redux_1.Provider, { store: store },
         React.createElement("div", null,
             React.createElement(todo_1.TodoPage, null),
-            React.createElement(lightbox_1.LightBoxRedux, null))), document.querySelector("#init"));
+            React.createElement(lightbox_1.LightBoxRedux, null))), document.querySelector(selector));
 }
 exports.initRun = initRun;
-if (require.main === module) {
-    initRun();
-}
