@@ -1,0 +1,26 @@
+<DockLayout width="210" height="210" backgroundColor="lightgray" stretchLastChild="false">
+  <StackLayout dock="top" orientation="horizontal" width="210" height="210" backgroundColor="lightgray">
+    <Label text="Todos" textWrap="true" />
+    <TextField
+        hint="What needs to be done?"
+        [(ngModel)]="newTodo.description"
+        (keyup.enter)="addTodo()"
+        secure="false"
+        returnKeyType="done"
+        returnPress="addTodo()"
+        autocorrect="false"
+        class="input input-border"
+    />
+  </StackLayout>
+  <StackLayout orientation="vertical" width="210" height="210" backgroundColor="lightgray" *ngIf="todos.length > 0">
+    <StackLayout orientation="vertical" *ngFor="let todo of todos" [class.completed]="todo.finished !== 0" width="210" height="210" backgroundColor="lightgray" *ngIf="todos.length > 0">
+      <CheckBox text="Finished" (click)="toggleTodoComplete(todo)" [checked]="todo.finished !== 0"></CheckBox>
+      <Label text="{{todo.description}}" textWrap="true" />
+      <Button text="Tap me!" (tap)="removeTodo(todo)"></Button>
+    </StackLayout>
+  </StackLayout>
+  <StackLayout dock="bottom" orientation="horizontal" width="210" height="210" backgroundColor="lightgray">
+    <Label text="{{todos.length}}" textWrap="true" />
+    <Label text="{{todos.length == 1 ? 'item' : 'items'}}" textWrap="true" />
+  </StackLayout>
+</DockLayout>
