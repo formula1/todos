@@ -17,13 +17,15 @@ import {
 import {
   ITodoAPI,
   Todo,
-  TodoInit
+  TodoInit,
+  Listener
 } from "./types/todo";
 
 export {
   ITodoAPI,
   Todo,
   TodoInit,
+  Listener,
 
   EthTodoAPI,
   FecthTodoAPI,
