@@ -1,26 +1,48 @@
-<DockLayout width="210" height="210" backgroundColor="lightgray" stretchLastChild="false">
-  <StackLayout dock="top" orientation="horizontal" width="210" height="210" backgroundColor="lightgray">
-    <Label text="Todos" textWrap="true" />
+<DockLayout width="100%" height="100%" backgroundColor="lightgray" stretchLastChild="true">
+  <StackLayout dock="top" orientation="horizontal" width="210" backgroundColor="lightgray">
+    <Label
+      text="Todos"
+      textWrap="true"
+      verticalAlignment="center"
+      horizontalAlignment="center"
+    ></Label>
     <TextField
-        hint="What needs to be done?"
-        [(ngModel)]="newTodo.description"
-        (keyup.enter)="addTodo()"
-        secure="false"
-        returnKeyType="done"
-        returnPress="addTodo()"
-        autocorrect="false"
-        class="input input-border"
-    />
+      verticalAlignment="center"
+      horizontalAlignment="stretch"
+      hint="What to do?"
+      autocorrect="false"
+      returnKeyType="done"
+      [(ngModel)]="description"
+
+    ></TextField>
+    <Button text="Done" (tap)="addTodo()"></Button> -->
+
   </StackLayout>
-  <StackLayout orientation="vertical" width="210" height="210" backgroundColor="lightgray" *ngIf="todos.length > 0">
-    <StackLayout orientation="vertical" *ngFor="let todo of todos" [class.completed]="todo.finished !== 0" width="210" height="210" backgroundColor="lightgray" *ngIf="todos.length > 0">
-      <CheckBox text="Finished" (click)="toggleTodoComplete(todo)" [checked]="todo.finished !== 0"></CheckBox>
-      <Label text="{{todo.description}}" textWrap="true" />
-      <Button text="Tap me!" (tap)="removeTodo(todo)"></Button>
-    </StackLayout>
+  <StackLayout dock="bottom" orientation="horizontal" width="100%" backgroundColor="lightgray">
+    <Label
+      text="{{todos.length}} "
+      textWrap="true"
+      horizontalAlignment="center"
+      verticalAlignment="stretch"
+    ></Label>
+    <Label
+      text=" {{todos.length == 1 ? 'item' : 'items'}}"
+      textWrap="true"
+      horizontalAlignment="center"
+      verticalAlignment="stretch"
+    ></Label>
   </StackLayout>
-  <StackLayout dock="bottom" orientation="horizontal" width="210" height="210" backgroundColor="lightgray">
-    <Label text="{{todos.length}}" textWrap="true" />
-    <Label text="{{todos.length == 1 ? 'item' : 'items'}}" textWrap="true" />
+  <StackLayout dock="bottom" width="100%">
+    <ScrollView>
+      <StackLayout orientation="vertical" width="210"  backgroundColor="lightgray" *ngIf="todos.length > 0">
+        <StackLayout orientation="vertical" *ngFor="let todo of todos; trackBy: trackItem" [class.completed]="todo.finished !== 0" width="100%" backgroundColor="lightgray" >
+          <Label text="{{todo.created | MomentPipe}}" ></Label>
+          <Label text="{{todo.finished | MomentPipe}}" *ngIf="todo.finished !== 0" ></Label>
+          <Button text="Finish" (tap)="toggleTodoComplete(todo)" *ngIf="todo.finished == 0"></Button>
+          <Label text="{{todo.description}}" textWrap="true" ></Label>
+          <Button text="Delete" (tap)="removeTodo(todo)"></Button>
+        </StackLayout>
+      </StackLayout>
+    </ScrollView>
   </StackLayout>
 </DockLayout>

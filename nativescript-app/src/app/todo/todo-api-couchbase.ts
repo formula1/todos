@@ -16,6 +16,8 @@ export class CouchbaseTodoAPI implements ITodoAPI {
   constructor(databaseName: string){
     this.database = new Couchbase(databaseName);
     this.database.addDatabaseChangeListener((changes)=>{
+      console.log("database change listener");
+      console.log(changes);
       this.emit("update");
     });
   }
@@ -28,6 +30,7 @@ export class CouchbaseTodoAPI implements ITodoAPI {
   }
 
   emit(value){
+    console.log("emitting");
     this.listeners.forEach((l)=>{
       l(value);
     })
@@ -53,6 +56,7 @@ export class CouchbaseTodoAPI implements ITodoAPI {
     });
   }
   c_createItem(values: TodoInit){
+    console.log(values);
     return Promise.resolve().then(()=>{
       const value: Todo = Object.assign({}, values, {
         created: Date.now(),
@@ -78,6 +82,15 @@ export class CouchbaseTodoAPI implements ITodoAPI {
       }).then(()=>{
         return doc;
       })
+    })
+  }
+  d_deleteAll(){
+    this.r_List().then((ids)=>{
+      this.database.inBatch(() => {
+        ids.forEach((id)=>{
+          this.database.deleteDocument(id);
+        })
+      });
     })
   }
 }
