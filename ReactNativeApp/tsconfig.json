@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist/",
+    "lib": ["es5", "es6", "es2015"],
+    "esModuleInterop": true,
+    "noImplicitAny": true,
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "removeComments": true,
+    "preserveConstEnums": true,
+    "target": "es6",
+    "jsx": "react"
+  },
+  "typeRoots": [
+    "./node_modules/@types",
+    "./@types"
+  ],
+  "files": [
+    "src/App.tsx"
+  ],
+  "exclude": [
+    "node_modules",
+    "**/*.spec.ts"
+  ]
+}
