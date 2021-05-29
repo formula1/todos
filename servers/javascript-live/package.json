@@ -27,6 +27,6 @@
     "mongodb": "^3.3.2",
     "readable-stream": "^3.4.0",
     "websocket": "^1.0.30",
-    "ws": "^7.1.2"
+    "ws": "^7.4.6"
   }
 }
